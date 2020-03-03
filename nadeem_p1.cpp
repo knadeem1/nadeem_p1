@@ -37,8 +37,25 @@ void nfa(int startState, string input, vector<int> acceptStates, multimap<int,pa
 		current = next;
 	}
 
-	vector<int> intersection;
+	vector<int> rejected;
 	bool check = false;
+	for(int state:current){
+		for(int k=0;k<rejected.size();k++){
+			if(state==rejected.at(k)){
+				check = true;
+			}
+		}
+		if(!check){
+			rejected.push_back(state);
+		}
+		check = false;
+	}
+
+	check = false;
+
+
+	vector<int> intersection;
+	//bool check = false;
 	for(int state:acceptStates){
 		for(int i:current){
 			if(state == i){
@@ -54,6 +71,7 @@ void nfa(int startState, string input, vector<int> acceptStates, multimap<int,pa
 			check = false;
 		}
 	}
+	//cout<<current.size();
 
 	if(!intersection.empty()){
 		cout<<"accept ";
@@ -64,7 +82,7 @@ void nfa(int startState, string input, vector<int> acceptStates, multimap<int,pa
 		cout<<endl;
 	} else{
 		cout<<"reject ";
-		for(int i:current){
+		for(int i:rejected){
 			cout<<i;
 			cout<<" ";
 		}
